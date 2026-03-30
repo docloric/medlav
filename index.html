@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -205,21 +204,39 @@ button.btn-warn { background: #f59e0b; color: #000; }
 .day .d-badge {
   font-size: 10px;
   font-weight: 600;
-  padding: 1px 5px;
+  padding: 1px 4px;
   border-radius: 4px;
   background: rgba(0,0,0,.07);
   color: var(--text);
   width: fit-content;
-  max-width: 100%;
+  max-width: calc(100% - 4px);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 1.3;
 }
-.day .d-note { font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.day .d-status { position: absolute; bottom: 4px; right: 5px; font-size: 12px; }
-.day .d-hol-emoji { position: absolute; top: 4px; right: 5px; font-size: 13px; }
-.day .d-lesson-icon { position: absolute; top: 4px; left: 4px; font-size: 12px; }
-.day.has-lesson .d-lesson-icon { display: block; }
+.day .d-hours { font-size: 11px; color: var(--muted); line-height: 1.2; }
+.day .d-status { position: absolute; bottom: 3px; right: 4px; font-size: 11px; line-height: 1; }
+/* Emoji festivo: piccola, in alto a destra, NON sovrapposta al numero */
+.day .d-hol-emoji {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  font-size: 12px;
+  line-height: 1;
+  pointer-events: none;
+}
+/* Quando c'è emoji festivo, sposta il numero a sinistra */
+.day.holiday .d-num,
+.day .d-hol-emoji ~ .d-num { padding-right: 16px; }
+.day .d-lesson-icon {
+  position: absolute;
+  bottom: 3px;
+  left: 4px;
+  font-size: 11px;
+  line-height: 1;
+  pointer-events: none;
+}
 
 /* ===== STATISTICHE MENSILI ===== */
 .stats-grid {
@@ -915,15 +932,15 @@ function calcEaster(Y) {
 
 const HOL_FIXED = {
   '01-01': ['Capodanno','🎆'],
-  '01-06': ['Epifania','🧹'],
-  '04-25': ['Festa della Liberazione','🇮🇹'],
-  '05-01': ['Festa dei Lavoratori','🛠️'],
-  '06-02': ['Festa della Repubblica','🎖️'],
-  '08-15': ['Ferragosto','☀️'],
-  '11-01': ['Tutti i Santi','✝️'],
-  '12-08': ['Immacolata Concezione','👼'],
-  '12-25': ['Natale','🎄'],
-  '12-26': ['Santo Stefano','🎁'],
+  '06-01': ['Epifania','🧹'],
+  '25-04': ['Festa della Liberazione','🇮🇹'],
+  '01-05': ['Festa dei Lavoratori','🛠️'],
+  '02-06': ['Festa della Repubblica','🎖️'],
+  '15-08': ['Ferragosto','☀️'],
+  '01-11': ['Tutti i Santi','✝️'],
+  '08-12': ['Immacolata Concezione','👼'],
+  '25-12': ['Natale','🎄'],
+  '26-12': ['Santo Stefano','🎁'],
 };
 
 function getHolidays(year) {
@@ -1092,31 +1109,40 @@ function renderCalendar(y, m) {
 
     const el = document.createElement('div');
     let cls = 'day';
-    if (isWeekend)          cls += ' weekend';
-    if (type === 'holiday') cls += ' holiday';
-    if (type === 'vacation') cls += ' vacation';
-    if (type === 'sick')    cls += ' sick';
+    if (isWeekend)  cls += ' weekend';
+    // festivo: colora se salvato come holiday OPPURE se è festivo nazionale non ancora salvato (feriale)
+    if (type === 'holiday' || (holInfo && !isWeekend && !stored)) cls += ' holiday';
+    if (type === 'vacation')   cls += ' vacation';
+    if (type === 'sick')       cls += ' sick';
     if (type === 'conference') cls += ' conference';
     if (type === 'work' && minutes > 0) cls += ' worked';
-    if (missIn || missOut)  cls += ' missed';
-    if (lessons.length > 0) cls += ' has-lesson';
+    if (missIn || missOut)     cls += ' missed';
+    if (lessons.length > 0)   cls += ' has-lesson';
     el.className = cls;
     el.setAttribute('data-iso', iso);
 
+    // Numero giorno
     let innerHTML = `<div class="d-num">${d}</div>`;
-    innerHTML += `<div class="d-hours">${minutes > 0 ? minToHM(minutes) : '--'}</div>`;
-    if (type !== 'work') innerHTML += `<div class="d-badge">${typeBadge(type, note)}</div>`;
-    if (holInfo && type !== 'work') innerHTML += `<div class="d-note" style="font-size:9px;opacity:.8">${holInfo[0]}</div>`;
 
-    // Status icon
+    // Ore — solo se presenti
     if (minutes > 0) {
-      const icon = minutes > 360 ? '✅' : minutes >= 240 ? '⚠️' : '❌';
+      innerHTML += `<div class="d-hours">${minToHM(minutes)}</div>`;
+    }
+
+    // Badge tipo: ferie/malattia/congresso (NON per festivi: li identifica già l'emoji)
+    if (type === 'vacation')   innerHTML += `<div class="d-badge">ferie</div>`;
+    if (type === 'sick')       innerHTML += `<div class="d-badge">malattia</div>`;
+    if (type === 'conference') innerHTML += `<div class="d-badge">${note || 'congresso'}</div>`;
+
+    // Status icon solo per servizio con ore
+    if (minutes > 0 && type === 'work') {
+      const icon = minutes > 360 ? '\u2705' : minutes >= 240 ? '\u26a0\ufe0f' : '\u274c';
       innerHTML += `<div class="d-status">${icon}</div>`;
     }
-    // Emoji festivo
-    if (holInfo) innerHTML += `<div class="d-hol-emoji">${holInfo[1]}</div>`;
-    // Icona lezione
-    if (lessons.length > 0) innerHTML += `<div class="d-lesson-icon">📘</div>`;
+    // Emoji festivo in alto a destra — il nome completo appare nel modale al click
+    if (holInfo) innerHTML += `<div class="d-hol-emoji" title="${holInfo[0]}">${holInfo[1]}</div>`;
+    // Icona lezione in alto a sinistra
+    if (lessons.length > 0) innerHTML += `<div class="d-lesson-icon">\U0001f4d8</div>`;
 
     el.innerHTML = innerHTML;
     el.addEventListener('click', () => openModal(iso));
@@ -1316,7 +1342,12 @@ async function openModal(iso) {
   const holKey = pad2(d) + '-' + pad2(m);
   const holInfo = hols[holKey];
 
-  document.getElementById('modalDateTitle').textContent = isoToDMY(iso);
+  // Titolo modale: data + nome festività se presente
+  const _hols = getHolidays(y);
+  const _hk   = pad2(d) + '-' + pad2(m);
+  const _hi   = _hols[_hk];
+  const _title = _hi ? `${isoToDMY(iso)} — ${_hi[0]} ${_hi[1]}` : isoToDMY(iso);
+  document.getElementById('modalDateTitle').textContent = _title;
 
   // Dati salvati
   const stored = monthData[iso];
@@ -1872,44 +1903,19 @@ document.addEventListener('DOMContentLoaded', init);
 </script>
 
 <script>
-// Service Worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').then(reg => {
-      console.log('SW registered:', reg.scope);
-    }).catch(err => {
-      // SW non disponibile (file:// locale) — normale, i dati sono comunque in IndexedDB
-      console.log('SW non disponibile (normale su file://):', err.message);
-    });
+    navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
-
-// iOS "Aggiungi a schermata Home" banner
 (function(){
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isStandalone = ('standalone' in navigator) && navigator.standalone;
   const dismissed = localStorage.getItem('pwa_banner_dismissed');
   if (isIOS && !isStandalone && !dismissed) {
     const banner = document.createElement('div');
-    banner.id = 'pwaBanner';
-    banner.style.cssText = `
-      position:fixed;bottom:0;left:0;right:0;z-index:9999;
-      background:#1e293b;color:#f1f5f9;
-      padding:14px 16px 20px;
-      border-top:1px solid #334155;
-      font-family:-apple-system,sans-serif;font-size:14px;
-      display:flex;align-items:center;gap:12px;
-      box-shadow:0 -4px 20px rgba(0,0,0,.4);
-    `;
-    banner.innerHTML = `
-      <span style="font-size:28px">🩺</span>
-      <div style="flex:1">
-        <strong>Installa MedLav Ore</strong><br>
-        <span style="font-size:12px;opacity:.8">Tocca <strong>⎙ Condividi</strong> poi <strong>"Aggiungi a schermata Home"</strong></span>
-      </div>
-      <button onclick="document.getElementById('pwaBanner').remove();localStorage.setItem('pwa_banner_dismissed','1')"
-        style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;padding:4px">✕</button>
-    `;
+    banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1e293b;color:#f1f5f9;padding:14px 16px 28px;border-top:1px solid #334155;font-family:-apple-system,sans-serif;font-size:14px;display:flex;align-items:center;gap:12px;';
+    banner.innerHTML = '<span style="font-size:28px">🩺</span><div style="flex:1"><strong>Installa MedLav Ore</strong><br><span style="font-size:12px;opacity:.8">Tocca <strong>&#9141; Condividi</strong> poi <strong>"Aggiungi a schermata Home"</strong></span></div><button onclick="this.parentElement.remove();localStorage.setItem('pwa_banner_dismissed','1')" style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;padding:4px">&#x2715;</button>';
     document.body.appendChild(banner);
   }
 })();
