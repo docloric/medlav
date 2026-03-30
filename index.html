@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="MedLav Ore"/>
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAD20lEQVR4nO3d3W0UQRCF0QERAg4BEoOwcGIQAuRgnkayVjY/3uru6rnnPCO7vVvf1KwlD8cBAAAAAAAAAAAAAAAAANDeu9UHqPTpy8+n1WdI8ePx4RKzs/UPsePAf//28a//5vPXXxNOUmvXILY79FWH/jViGGubg6YN/i0hjNH+gDsO/nHUDv9pxwiOo3cIbQ9m8F8nhDrtDrTr4B/HnOE/7RrBcfQK4f3qAzxn+Pt+v0qd3uc2AXR6Uf7XqmEUwf0+rD5AlxeC+c73fuUt0dINcIXhX30VXv39K6ycg2UBGP46Xc5xj1XzsCSAKww/9VbMxfQArjL83a663c7zVrPno81vgWCFqQFc5erPWDPnZFoAVxr+rrcbXc/1FrPmZUoAVxp+5pkxNz4DEG14AK7+3GP0/NgARBsagKs/FUbOkQ1AtGEBuPpTadQ82QBEGxLA1a/+Xf8cseu5qoyYKxuAaAIgWnkAV7/9OXW73eh2nlGq58sGIJoA7tDlqtvlHDsSwJ1WD9/q77+70gBS7v9Zq3LObIACq67Crv73E0CR2cNo+GsIoNCsoTT8dZY/GvFqzuH0/wPswQYYpHpYDf8YNsBAFdvA4I8lgEIjbnte+5rCqOEWiGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKLFPBhrxEOrVprx8yQ8fMsGIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiBbzaMQZj/mb+fjFhMcWzmADEE0ARBMA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQLSYB2PN4GFV+7EBiCYAogmAaAIgmgCIJgCilQbw4/HhXeXXg5dUzpkNQDQBEE0ARCsPwOcARqqeLxuAaAIg2pAA3AYxwoi5sgGINiwAW4BKo+bJBiDa0ABsASqMnCMbgGjDA7AFuMfo+bEBiDYlAFuAt5gxN9M2gAj4H7PmZeotkAj4FzPnxGcAok0PwBbgT2bPx5INIAJesmIult0CiYDnVs3D0s8AIuA41s5BmwH89OXn0+ozMFeHC2Cb3wJ1eDGYp8v73SaA4+jzojBWp/e5zUFuuSW6nk6Df2p3oFtC2F/HwT+1PdgtIeyn8+Cf2h/wlhD622HwT9sc9CVi6GOnoX9uy0O/RhDz7DrwAAAAAAAAAAAAAAAAAOzqNxuMC3xKLRgmAAAAAElFTkSuQmCC"/>
+  <meta name="theme-color" content="#2563eb"/>
+
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="MedLav Ore"/>
+<title>Medicina del Lavoro — Ore Mensili</title>
+<style>
+/* ===== VARIABILI ===== */
+:root {
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --primary: #2563eb;
+  --danger: #ef4444;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --vac-bg: #dbeafe;
+  --vac-text: #1d4ed8;
+  --sick-bg: #fef9c3;
+  --sick-text: #854d0e;
+  --conf-bg: #dcfce7;
+  --conf-text: #166534;
+  --hol-bg: #fee2e2;
+  --hol-text: #991b1b;
+  --weekend-bg: #f3f0ff;
+  --weekend-text: #6d28d9;
+  --work-bg: #f9fafb;
+  --miss-border: #f59e0b;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.05);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --border: #334155;
+  --primary: #3b82f6;
+  --danger: #f87171;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --vac-bg: #1e3a5f;
+  --vac-text: #93c5fd;
+  --sick-bg: #422006;
+  --sick-text: #fde68a;
+  --conf-bg: #14532d;
+  --conf-text: #86efac;
+  --hol-bg: #450a0a;
+  --hol-text: #fca5a5;
+  --weekend-bg: #2e1065;
+  --weekend-text: #c4b5fd;
+  --work-bg: #1e293b;
+  --shadow: 0 1px 3px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.2);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.4);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-y: scroll; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+/* ===== LAYOUT ===== */
+.app { max-width: 980px; margin: 0 auto; padding: 12px; }
+
+/* ===== CARD ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-top: 12px;
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.app-header h1 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.controls-row select,
+.controls-row input[type="text"] {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  min-height: 40px;
+}
+.controls-row .course-badge {
+  padding: 6px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+#serviceInput { flex: 1 1 160px; min-width: 120px; }
+.btn-group { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 40px;
+  transition: filter .15s, transform .1s;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+button:active { transform: scale(.97); filter: brightness(.9); }
+button.btn-ghost { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+button.btn-danger { background: var(--danger); }
+button.btn-warn { background: #f59e0b; color: #000; }
+
+/* ===== CALENDARIO ===== */
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.cal-header div {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 4px 0;
+}
+.day {
+  min-height: 66px;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: box-shadow .15s, transform .1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.day:active { transform: scale(.97); }
+.day.weekend { background: var(--weekend-bg); border-color: var(--weekend-bg); }
+.day.holiday { background: var(--hol-bg); border-color: var(--hol-bg); }
+.day.vacation { background: var(--vac-bg); border-color: var(--vac-bg); }
+.day.sick { background: var(--sick-bg); border-color: var(--sick-bg); }
+.day.conference { background: var(--conf-bg); border-color: var(--conf-bg); }
+.day.worked { background: var(--work-bg); }
+.day.missed { box-shadow: 0 0 0 2px var(--miss-border) inset; }
+.day .d-num { font-size: 13px; font-weight: 700; }
+.day .d-hours { font-size: 11px; color: var(--muted); }
+.day .d-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(0,0,0,.07);
+  color: var(--text);
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.day .d-note { font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.day .d-status { position: absolute; bottom: 4px; right: 5px; font-size: 12px; }
+.day .d-hol-emoji { position: absolute; top: 4px; right: 5px; font-size: 13px; }
+.day .d-lesson-icon { position: absolute; top: 4px; left: 4px; font-size: 12px; }
+.day.has-lesson .d-lesson-icon { display: block; }
+
+/* ===== STATISTICHE MENSILI ===== */
+.stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
+  justify-content: center;
+}
+.stat-card {
+  flex: 1 1 90px;
+  min-width: 80px;
+  max-width: 140px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 6px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: box-shadow .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.stat-card strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-top: 2px; }
+.stat-card.clickable:active { box-shadow: var(--shadow); }
+.stat-card.c-vac { background: var(--vac-bg); color: var(--vac-text); border-color: var(--vac-bg); }
+.stat-card.c-vac strong { color: var(--vac-text); }
+.stat-card.c-sick { background: var(--sick-bg); color: var(--sick-text); border-color: var(--sick-bg); }
+.stat-card.c-sick strong { color: var(--sick-text); }
+.stat-card.c-conf { background: var(--conf-bg); color: var(--conf-text); border-color: var(--conf-bg); }
+.stat-card.c-conf strong { color: var(--conf-text); }
+.stat-card.c-hol { background: var(--hol-bg); color: var(--hol-text); border-color: var(--hol-bg); }
+.stat-card.c-hol strong { color: var(--hol-text); }
+.stat-card.c-miss { border: 1px solid var(--miss-border); }
+.stat-card.c-lesson { background: #dbeafe; color: #1d4ed8; border-color: #dbeafe; }
+.stat-card.c-lesson strong { color: #1d4ed8; }
+
+/* ===== LEGENDA ===== */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.leg-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ===== RIEPILOGO ANNUALE ===== */
+.year-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 12px 0;
+  flex-wrap: wrap;
+}
+.year-tab {
+  flex: 1 1 60px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  min-height: 38px;
+}
+.year-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.year-panels { padding: 10px 12px 12px; }
+.year-panel { display: none; }
+.year-panel.active { display: block; }
+.year-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.year-item {
+  flex: 1 1 120px;
+  min-width: 100px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.year-item:active { transform: scale(.97); }
+.year-item span { display: block; font-size: 11px; margin-bottom: 4px; }
+.year-item strong { font-size: 16px; font-weight: 700; }
+.year-item.ferie { background: var(--vac-bg); color: var(--vac-text); }
+.year-item.malattia { background: var(--sick-bg); color: var(--sick-text); }
+.year-item.congresso { background: var(--conf-bg); color: var(--conf-text); }
+.year-item.timbrature { border: 1px solid var(--miss-border); color: var(--text); }
+.year-item.ore { background: var(--bg); border: 1px solid var(--border); color: var(--text); }
+.year-item.lezioni { background: #dbeafe; color: #1d4ed8; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 5vh 12px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.modal-overlay[hidden] { display: none; }
+.modal-box {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.modal-header h3 { font-size: 16px; font-weight: 700; }
+.modal-close {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+.form-group select,
+.form-group input[type="text"],
+.form-group input[type="time"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  min-height: 44px;
+  -webkit-appearance: none;
+}
+.form-group input:focus,
+.form-group select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+
+/* Fasce orarie */
+.fascia-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.fascia-row input[type="time"] { flex: 1; }
+.fascia-row .btn-del { background: var(--danger); min-width: 36px; padding: 8px; }
+#addFasciaBtn { width: 100%; background: var(--bg); color: var(--primary); border: 1px dashed var(--primary); }
+
+/* Checkboxes mancata timbratura */
+.miss-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--miss-border);
+}
+.miss-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.miss-label input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* Lista lezioni nel modale */
+.lesson-list { margin-bottom: 10px; }
+.lesson-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: var(--bg);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+}
+.lesson-row .l-del { background: var(--danger); padding: 4px 8px; min-height: 30px; font-size: 12px; }
+.lesson-form {
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  margin-top: 6px;
+}
+.lesson-form .time-row { display: flex; gap: 8px; }
+.lesson-form .time-row input { flex: 1; }
+.add-lesson-btn { margin-top: 8px; width: 100%; background: var(--bg); color: var(--primary); border: 1px dashed var(--primary); }
+
+/* Footer modal */
+.modal-footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* ===== POPUP LIST ===== */
+.popup-list {
+  position: fixed;
+  z-index: 200;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: var(--shadow-lg);
+  max-width: 300px;
+  max-height: 60vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.popup-list[hidden] { display: none; }
+.popup-list h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.popup-list ul { list-style: none; font-size: 13px; }
+.popup-list ul li { padding: 3px 0; border-bottom: 1px solid var(--border); }
+.popup-list ul li:last-child { border-bottom: none; }
+.popup-close { width: 100%; margin-top: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+
+/* ===== COLLAPSIBLE SECTIONS ===== */
+.collapsible { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  background: var(--bg);
+  -webkit-tap-highlight-color: transparent;
+}
+.collapsible-header .toggle-icon { font-size: 18px; line-height: 1; }
+.collapsible-body { display: none; padding: 10px 12px; }
+.collapsible.open .collapsible-body { display: block; }
+
+/* ===== RESET POPUP ===== */
+.confirm-popup {
+  position: fixed;
+  z-index: 300;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: var(--shadow-lg);
+  max-width: 280px;
+  width: calc(100% - 40px);
+}
+.confirm-popup[hidden] { display: none; }
+.confirm-popup p { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.confirm-popup .confirm-btns { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ===== FOOTER ACTIONS ===== */
+.footer-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+/* ===== NOTICE BANNER ===== */
+.notice-banner {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #92400e;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+[data-theme="dark"] .notice-banner { background: #422006; color: #fde68a; border-color: #92400e; }
+.notice-banner .notice-icon { font-size: 18px; flex-shrink: 0; }
+.notice-banner button { background: #f59e0b; color: #000; padding: 4px 10px; font-size: 12px; min-height: 30px; margin-top: 4px; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .app { padding: 8px; }
+  .calendar-grid { gap: 3px; }
+  .day { min-height: 54px; padding: 4px; }
+  .day .d-num { font-size: 12px; }
+  .day .d-hours { font-size: 10px; }
+  .day .d-badge { font-size: 9px; }
+  .stats-grid { gap: 5px; }
+  .stat-card { flex: 1 1 70px; font-size: 10px; }
+  .stat-card strong { font-size: 13px; }
+  .year-body { gap: 6px; }
+  .year-item { flex: 1 1 90px; min-width: 80px; padding: 8px; }
+  .year-item strong { font-size: 14px; }
+  .controls-row { gap: 6px; }
+  .btn-group { margin-left: 0; width: 100%; }
+  .modal-box { border-radius: 16px; }
+}
+@media (max-width: 380px) {
+  .day { min-height: 48px; }
+  .stat-card { flex: 1 1 55px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- NOTICE BANNER (mostrato se localStorage non funziona) -->
+<div class="notice-banner" id="noticeBanner" hidden>
+  <span class="notice-icon">⚠️</span>
+  <div>
+    <strong>Dati non salvati automaticamente</strong><br>
+    Su Safari/iPhone quando si apre un file locale, i dati potrebbero non essere salvati.<br>
+    <strong>Soluzione:</strong> usa il pulsante <em>Esporta dati</em> spesso, oppure carica il file su un server.<br>
+    <button onclick="exportAllCSV(); document.getElementById('noticeBanner').hidden=true">📤 Esporta ora</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="app-header">
+  <h1>🩺 Medicina del Lavoro — Ore Mensili</h1>
+  <div class="controls-row">
+    <label style="white-space:nowrap;font-size:13px">Mese <select id="monthSelect"></select></label>
+    <label style="white-space:nowrap;font-size:13px">Anno <select id="yearSelect"></select></label>
+    <div class="course-badge">Anno: <strong id="courseYear">—</strong></div>
+    <input id="serviceInput" type="text" placeholder="Servizio/Reparto" autocomplete="off"/>
+    <div class="btn-group">
+      <button onclick="goToday()" title="Oggi">📅</button>
+      <button class="btn-ghost" onclick="toggleTheme()" title="Tema">🌓</button>
+      <button class="btn-ghost" onclick="changeMonth(-1)">◀</button>
+      <button class="btn-ghost" onclick="changeMonth(1)">▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- MESE CORRENTE -->
+<div class="card" id="monthCard">
+  <div class="section-title">
+    <span id="monthTitle"></span>
+    <button class="btn-warn" onclick="confirmResetMonth(event)" style="font-size:12px;padding:6px 10px">🔄 Reset mese</button>
+  </div>
+
+  <h3 style="font-size:14px;margin-bottom:8px;color:var(--muted)">📊 Riepilogo mensile</h3>
+  <div class="stats-grid" id="statsRow1">
+    <div class="stat-card"><div>Obiettivo</div><strong>152:00</strong></div>
+    <div class="stat-card"><div>Ore svolte</div><strong id="sTotal">00:00</strong></div>
+    <div class="stat-card"><div>Mancanti</div><strong id="sRemaining">152:00</strong></div>
+    <div class="stat-card"><div>Gg lavorativi</div><strong id="sWdTotal">0</strong></div>
+    <div class="stat-card"><div>Gg coperti</div><strong id="sWdCovered">0</strong></div>
+    <div class="stat-card"><div>Gg mancanti</div><strong id="sWdMissing">0</strong></div>
+    <div class="stat-card"><div>Media/giorno</div><strong id="sDailyAvg">--:--</strong></div>
+  </div>
+  <div class="stats-grid" id="statsRow2">
+    <div class="stat-card clickable c-vac" id="cardVac" onclick="showMonthList('vacation')">Ferie<br><strong id="mVac">0</strong></div>
+    <div class="stat-card clickable c-sick" id="cardSick" onclick="showMonthList('sick')">Malattia<br><strong id="mSick">0</strong></div>
+    <div class="stat-card clickable c-conf" id="cardConf" onclick="showMonthList('conference')">Congressi<br><strong id="mConf">0</strong></div>
+    <div class="stat-card clickable c-miss" onclick="showMonthList('misses')">Mancate timbrature<br><strong id="mMiss">0</strong></div>
+    <div class="stat-card clickable c-hol" onclick="showMonthList('holidays')">Festivi<br><strong id="mHol">0</strong></div>
+    <div class="stat-card clickable c-lesson" onclick="showMonthList('lessons')">Lezioni<br><strong id="mLesson">0</strong></div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid var(--border);margin:10px 0"/>
+
+  <!-- Calendario -->
+  <div class="calendar-grid cal-header">
+    <div>Lu</div><div>Ma</div><div>Me</div><div>Gi</div><div>Ve</div><div>Sa</div><div>Do</div>
+  </div>
+  <div class="calendar-grid" id="calendar"></div>
+
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:var(--hol-bg);border:1px solid var(--hol-text)"></div>Festivo</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--vac-bg);border:1px solid var(--vac-text)"></div>Ferie</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--sick-bg);border:1px solid var(--sick-text)"></div>Malattia</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--conf-bg);border:1px solid var(--conf-text)"></div>Congresso</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--work-bg);border:1px solid var(--border)"></div>Servizio</div>
+    <div class="leg-item"><div class="leg-dot" style="border:2px solid var(--miss-border)"></div>Mancata timbr.</div>
+    <div class="leg-item">✅ Completo | ⚠️ Parziale | ❌ Assenza</div>
+  </div>
+</div>
+
+<!-- RIEPILOGO ANNUALE -->
+<div class="card" id="annualSummary">
+  <div class="year-tabs" id="yearTabs">
+    <button class="year-tab" data-year="1" onclick="setYearTab(1)">Anno I</button>
+    <button class="year-tab" data-year="2" onclick="setYearTab(2)">Anno II</button>
+    <button class="year-tab" data-year="3" onclick="setYearTab(3)">Anno III</button>
+    <button class="year-tab" data-year="4" onclick="setYearTab(4)">Anno IV</button>
+  </div>
+  <div class="year-panels" id="yearPanels">
+    <!-- Generati da JS -->
+  </div>
+  <div class="footer-actions">
+    <button onclick="exportAllCSV()">📤 Esporta CSV</button>
+    <button onclick="importCSV()" class="btn-ghost">📥 Importa CSV</button>
+    <button class="btn-danger" onclick="confirmResetAll(event)">🧹 Reset completo</button>
+  </div>
+  <input type="file" id="fileInput" accept=".csv" hidden onchange="handleImport(event)"/>
+</div>
+
+</div><!-- .app -->
+
+<!-- MODAL GIORNO -->
+<div class="modal-overlay" id="dayModal" hidden onclick="handleOverlayClick(event)">
+  <div class="modal-box" id="dayModalBox">
+    <div class="modal-header">
+      <h3 id="modalDateTitle">—</h3>
+      <button class="modal-close" onclick="closeModal()">Chiudi</button>
+    </div>
+
+    <div class="form-group">
+      <label>Tipo giornata</label>
+      <select id="dayType" onchange="onDayTypeChange()">
+        <option value="work">Attività di servizio</option>
+        <option value="holiday">Festivo (07:35)</option>
+        <option value="vacation">Ferie (07:35)</option>
+        <option value="sick">Malattia (07:35)</option>
+        <option value="conference">Congresso (07:35)</option>
+      </select>
+    </div>
+
+    <!-- Ore totali (manuale, disabilitato se ci sono fasce) -->
+    <div class="form-group" id="oreTotaliGroup">
+      <label>Ore totali</label>
+      <input type="text" id="timeInput" placeholder="es. 07:35"/>
+    </div>
+
+    <!-- Nome congresso -->
+    <div class="form-group" id="confNameGroup" hidden>
+      <label>Nome congresso</label>
+      <input type="text" id="confName" placeholder="es. Congresso XYZ" autocomplete="off"/>
+    </div>
+
+    <!-- Sezione Entrata/Uscita (solo per Attività di servizio) -->
+    <div class="collapsible" id="fasceSec">
+      <div class="collapsible-header" onclick="toggleCollapsible('fasceSec')">
+        <span>⏱️ Entrata / Uscita</span>
+        <span class="toggle-icon">＋</span>
+      </div>
+      <div class="collapsible-body">
+        <div id="fasceList"></div>
+        <button id="addFasciaBtn" onclick="addFascia()">+ Aggiungi fascia</button>
+      </div>
+    </div>
+
+    <!-- Sezione Lezione (solo per Attività di servizio) -->
+    <div class="collapsible" id="lessonSec">
+      <div class="collapsible-header" onclick="toggleCollapsible('lessonSec')">
+        <span>📘 Lezioni</span>
+        <span class="toggle-icon">＋</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="lesson-list" id="lessonListModal"></div>
+        <div class="lesson-form">
+          <div class="form-group" style="margin-bottom:8px"><input type="text" id="lessonTitle" placeholder="Titolo / Argomento"/></div>
+          <div class="form-group" style="margin-bottom:8px"><input type="text" id="lessonDoc" placeholder="Docente (facoltativo)" autocomplete="off"/></div>
+          <div class="time-row form-group" style="margin-bottom:0">
+            <input type="time" id="lessonStart"/>
+            <input type="time" id="lessonEnd"/>
+          </div>
+          <button class="add-lesson-btn" onclick="addLesson()">+ Aggiungi lezione</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mancata timbratura (solo per Attività di servizio) -->
+    <div class="collapsible" id="missSec">
+      <div class="collapsible-header" onclick="toggleCollapsible('missSec')">
+        <span>⚠️ Mancata timbratura</span>
+        <span class="toggle-icon">＋</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="miss-group">
+          <label class="miss-label"><input type="checkbox" id="missIn"/> Entrata</label>
+          <label class="miss-label"><input type="checkbox" id="missOut"/> Uscita</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="clearDay()">Cancella</button>
+      <button onclick="saveDay()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP LISTA -->
+<div class="popup-list" id="listPopup" hidden>
+  <h4 id="popupTitle"></h4>
+  <ul id="popupBody"></ul>
+  <button class="popup-close" onclick="closePopup()">Chiudi</button>
+</div>
+
+<!-- CONFIRM POPUP -->
+<div class="confirm-popup" id="confirmPopup" hidden>
+  <h4 id="confirmTitle" style="font-size:14px;margin-bottom:6px">Conferma</h4>
+  <p id="confirmMsg"></p>
+  <div class="confirm-btns">
+    <button class="btn-ghost" onclick="closeConfirm()">Annulla</button>
+    <button class="btn-danger" id="confirmOk">Conferma</button>
+  </div>
+</div>
+
+<script>
+// ======================================================
+// COSTANTI
+// ======================================================
+const FIXED_MIN = 7 * 60 + 35; // 07:35
+const GOAL_MIN  = 152 * 60;    // 152 ore
+
+// Anno di inizio corso (Novembre)
+const COURSE_STARTS = [
+  new Date(2024, 10, 1),
+  new Date(2025, 10, 1),
+  new Date(2026, 10, 1),
+  new Date(2027, 10, 1),
+];
+
+// ======================================================
+// UTILS
+// ======================================================
+function hmToMin(hm) {
+  if (!hm) return 0;
+  const p = String(hm).trim().split(':');
+  if (p.length !== 2) return 0;
+  return (parseInt(p[0], 10) || 0) * 60 + (parseInt(p[1], 10) || 0);
+}
+function minToHM(min) {
+  const sign = min < 0 ? '-' : '';
+  min = Math.abs(Math.round(min));
+  return sign + String(Math.floor(min / 60)).padStart(2, '0') + ':' + String(min % 60).padStart(2, '0');
+}
+function pad2(n) { return String(n).padStart(2, '0'); }
+function isoDate(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function isoToDMY(iso) { const [y,m,d] = iso.split('-'); return d + '-' + m + '-' + y; }
+
+// ======================================================
+// STORAGE — con auto-backup su IndexedDB come fallback
+// ======================================================
+const DB_NAME = 'medlav_db';
+const DB_VER  = 1;
+let db = null;
+
+function openDB() {
+  return new Promise((res, rej) => {
+    if (!window.indexedDB) { res(null); return; }
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('data')) d.createObjectStore('data');
+    };
+    req.onsuccess = e => { db = e.target.result; res(db); };
+    req.onerror   = () => { res(null); };
+  });
+}
+
+function dbGet(key) {
+  return new Promise(res => {
+    if (!db) { res(null); return; }
+    const tx = db.transaction('data', 'readonly');
+    const req = tx.objectStore('data').get(key);
+    req.onsuccess = () => res(req.result ?? null);
+    req.onerror   = () => res(null);
+  });
+}
+function dbSet(key, val) {
+  return new Promise(res => {
+    if (!db) { res(); return; }
+    const tx = db.transaction('data', 'readwrite');
+    tx.objectStore('data').put(val, key);
+    tx.oncomplete = res;
+    tx.onerror    = res;
+  });
+}
+function dbDel(key) {
+  return new Promise(res => {
+    if (!db) { res(); return; }
+    const tx = db.transaction('data', 'readwrite');
+    tx.objectStore('data').delete(key);
+    tx.oncomplete = res;
+    tx.onerror    = res;
+  });
+}
+function dbKeys() {
+  return new Promise(res => {
+    if (!db) { res([]); return; }
+    const tx = db.transaction('data', 'readonly');
+    const req = tx.objectStore('data').getAllKeys();
+    req.onsuccess = () => res(req.result || []);
+    req.onerror   = () => res([]);
+  });
+}
+
+// Chiavi
+function monthKey(y, m) { return `ore_${y}_${m}`; }
+function metaKey(y, m)  { return `meta_${y}_${m}`; }
+
+// Cache in memoria (sincronizzata con IndexedDB)
+const cache = {};
+
+async function loadMonth(y, m) {
+  const k = monthKey(y, m);
+  if (cache[k] !== undefined) return cache[k];
+  // Prova LocalStorage prima
+  try {
+    const ls = localStorage.getItem(k);
+    if (ls) { cache[k] = JSON.parse(ls); return cache[k]; }
+  } catch(_) {}
+  // Prova IndexedDB
+  const val = await dbGet(k);
+  if (val) { cache[k] = val; return val; }
+  cache[k] = {};
+  return {};
+}
+
+async function saveMonth(y, m, obj) {
+  const k = monthKey(y, m);
+  cache[k] = obj;
+  try { localStorage.setItem(k, JSON.stringify(obj)); } catch(_) {}
+  await dbSet(k, obj);
+}
+
+async function loadMeta(y, m) {
+  const k = metaKey(y, m);
+  try {
+    const ls = localStorage.getItem(k);
+    if (ls) return JSON.parse(ls);
+  } catch(_) {}
+  return await dbGet(k) || {};
+}
+async function saveMeta(y, m, obj) {
+  const k = metaKey(y, m);
+  try { localStorage.setItem(k, JSON.stringify(obj)); } catch(_) {}
+  await dbSet(k, obj);
+}
+
+async function getAllOreKeys() {
+  // Da localStorage
+  const lsKeys = [];
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('ore_')) lsKeys.push(k);
+    }
+  } catch(_) {}
+  // Da IndexedDB
+  const idbKeys = (await dbKeys()).filter(k => String(k).startsWith('ore_'));
+  // Union
+  return [...new Set([...lsKeys, ...idbKeys])];
+}
+
+// ======================================================
+// FESTIVITÀ ITALIANE
+// ======================================================
+function calcEaster(Y) {
+  const a=Y%19, b=Math.floor(Y/100), c=Y%100, d=Math.floor(b/4), e=b%4;
+  const f=Math.floor((b+8)/25), g=Math.floor((b-f+1)/3);
+  const h=(19*a+b-d-g+15)%30, i=Math.floor(c/4), k=c%4;
+  const L=(32+2*e+2*i-h-k)%7, m2=Math.floor((a+11*h+22*L)/451);
+  const month=Math.floor((h+L-7*m2+114)/31), day=((h+L-7*m2+114)%31)+1;
+  return new Date(Y, month-1, day);
+}
+
+const HOL_FIXED = {
+  '01-01': ['Capodanno','🎆'],
+  '01-06': ['Epifania','🧹'],
+  '04-25': ['Festa della Liberazione','🇮🇹'],
+  '05-01': ['Festa dei Lavoratori','🛠️'],
+  '06-02': ['Festa della Repubblica','🎖️'],
+  '08-15': ['Ferragosto','☀️'],
+  '11-01': ['Tutti i Santi','✝️'],
+  '12-08': ['Immacolata Concezione','👼'],
+  '12-25': ['Natale','🎄'],
+  '12-26': ['Santo Stefano','🎁'],
+};
+
+function getHolidays(year) {
+  const map = {};
+  for (const [k, v] of Object.entries(HOL_FIXED)) map[k] = v;
+  const easter = calcEaster(year);
+  const easterMon = new Date(easter); easterMon.setDate(easter.getDate() + 1);
+  const ek  = pad2(easter.getDate()) + '-' + pad2(easter.getMonth() + 1);
+  const emk = pad2(easterMon.getDate()) + '-' + pad2(easterMon.getMonth() + 1);
+  map[ek]  = ['Pasqua', '🕊️'];
+  map[emk] = ["Lunedì dell'Angelo", '🧺'];
+  return map;
+}
+
+function isHoliday(iso, year) {
+  const hols = getHolidays(year);
+  const key  = iso.slice(8, 10) + '-' + iso.slice(5, 7);
+  return hols[key] || null;
+}
+
+// ======================================================
+// STATO GLOBALE
+// ======================================================
+let selISO    = null;
+let activeYear = 1;
+let monthData  = {};    // dati caricati del mese corrente
+let fasceTemp  = [];    // fasce orarie nella modal
+
+function getY() { return parseInt(document.getElementById('yearSelect').value, 10); }
+function getM() { return parseInt(document.getElementById('monthSelect').value, 10); }
+
+// ======================================================
+// INIT
+// ======================================================
+async function init() {
+  // Popola selettori mese/anno
+  const months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+                   'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+  const mSel = document.getElementById('monthSelect');
+  months.forEach((n, i) => {
+    const o = document.createElement('option'); o.value = i+1; o.textContent = n; mSel.appendChild(o);
+  });
+  const ySel = document.getElementById('yearSelect');
+  for (let y = 2020; y <= 2100; y++) {
+    const o = document.createElement('option'); o.value = y; o.textContent = y; ySel.appendChild(o);
+  }
+  const now = new Date();
+  mSel.value = now.getMonth() + 1;
+  ySel.value = now.getFullYear();
+
+  mSel.addEventListener('change', renderAll);
+  ySel.addEventListener('change', renderAll);
+
+  // Tema
+  const savedTheme = safeGet('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+
+  // Servizio debounce
+  let svcTimer = null;
+  document.getElementById('serviceInput').addEventListener('input', () => {
+    clearTimeout(svcTimer);
+    svcTimer = setTimeout(() => {
+      saveMeta(getY(), getM(), { service: document.getElementById('serviceInput').value || '' });
+    }, 800);
+  });
+
+  // Apri IndexedDB
+  await openDB();
+
+  // Controlla se localStorage funziona (test Safari file://)
+  checkLocalStorage();
+
+  // Build pannelli annuali
+  buildYearPanels();
+
+  // Render
+  await renderAll();
+}
+
+function safeGet(k) {
+  try { return localStorage.getItem(k); } catch(_) { return null; }
+}
+function safeSet(k, v) {
+  try { localStorage.setItem(k, v); } catch(_) {}
+}
+
+function checkLocalStorage() {
+  try {
+    localStorage.setItem('__test__', '1');
+    localStorage.removeItem('__test__');
+  } catch(_) {
+    document.getElementById('noticeBanner').hidden = false;
+  }
+}
+
+// ======================================================
+// RENDER PRINCIPALE
+// ======================================================
+async function renderAll() {
+  const y = getY(), m = getM();
+  monthData = await loadMonth(y, m);
+
+  // Titolo
+  const label = new Date(y, m-1, 1).toLocaleString('it-IT', {month:'long', year:'numeric'});
+  document.getElementById('monthTitle').textContent = label.charAt(0).toUpperCase() + label.slice(1);
+
+  // Anno di corso
+  updateCourseYear(y, m);
+
+  // Servizio
+  const meta = await loadMeta(y, m);
+  document.getElementById('serviceInput').value = meta.service || '';
+
+  // Calendario
+  renderCalendar(y, m);
+
+  // Statistiche
+  updateStats(y, m);
+
+  // Anno tab
+  updateYearTab(y, m);
+  await updateYearBlocks();
+}
+
+// ======================================================
+// CALENDARIO
+// ======================================================
+function renderCalendar(y, m) {
+  const cal   = document.getElementById('calendar');
+  cal.innerHTML = '';
+  const hols  = getHolidays(y);
+  const firstDow = (new Date(y, m-1, 1).getDay() + 6) % 7;
+  const daysInMonth = new Date(y, m, 0).getDate();
+
+  // Celle vuote iniziali
+  for (let i = 0; i < firstDow; i++) {
+    const el = document.createElement('div');
+    el.className = 'day';
+    el.style.visibility = 'hidden';
+    el.style.cursor = 'default';
+    cal.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dt    = new Date(y, m-1, d);
+    const iso   = isoDate(dt);
+    const dow   = dt.getDay();
+    const isWeekend = dow === 0 || dow === 6;
+    const holKey = pad2(d) + '-' + pad2(m);
+    const holInfo = hols[holKey] || null;
+
+    const stored  = monthData[iso];
+    let type = 'work', minutes = 0, note = '';
+    let missIn = false, missOut = false, lessons = [], slots = [];
+    if (stored) {
+      type    = stored.type    || 'work';
+      minutes = stored.minutes || 0;
+      note    = stored.note    || '';
+      missIn  = !!stored.missIn;
+      missOut = !!stored.missOut;
+      lessons = stored.lessons || [];
+      slots   = stored.slots   || [];
+    } else if (holInfo && !isWeekend) {
+      type = 'holiday'; minutes = FIXED_MIN;
+    }
+
+    const el = document.createElement('div');
+    let cls = 'day';
+    if (isWeekend)          cls += ' weekend';
+    if (type === 'holiday') cls += ' holiday';
+    if (type === 'vacation') cls += ' vacation';
+    if (type === 'sick')    cls += ' sick';
+    if (type === 'conference') cls += ' conference';
+    if (type === 'work' && minutes > 0) cls += ' worked';
+    if (missIn || missOut)  cls += ' missed';
+    if (lessons.length > 0) cls += ' has-lesson';
+    el.className = cls;
+    el.setAttribute('data-iso', iso);
+
+    let innerHTML = `<div class="d-num">${d}</div>`;
+    innerHTML += `<div class="d-hours">${minutes > 0 ? minToHM(minutes) : '--'}</div>`;
+    if (type !== 'work') innerHTML += `<div class="d-badge">${typeBadge(type, note)}</div>`;
+    if (holInfo && type !== 'work') innerHTML += `<div class="d-note" style="font-size:9px;opacity:.8">${holInfo[0]}</div>`;
+
+    // Status icon
+    if (minutes > 0) {
+      const icon = minutes > 360 ? '✅' : minutes >= 240 ? '⚠️' : '❌';
+      innerHTML += `<div class="d-status">${icon}</div>`;
+    }
+    // Emoji festivo
+    if (holInfo) innerHTML += `<div class="d-hol-emoji">${holInfo[1]}</div>`;
+    // Icona lezione
+    if (lessons.length > 0) innerHTML += `<div class="d-lesson-icon">📘</div>`;
+
+    el.innerHTML = innerHTML;
+    el.addEventListener('click', () => openModal(iso));
+    cal.appendChild(el);
+  }
+}
+
+function typeBadge(type, note) {
+  const map = { holiday:'festivo', vacation:'ferie', sick:'malattia', conference: note || 'congresso', work:'servizio' };
+  return map[type] || type;
+}
+
+// ======================================================
+// STATISTICHE MENSILI
+// ======================================================
+function updateStats(y, m) {
+  const hols = getHolidays(y);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  let sum = 0, wdTotal = 0, wdCovered = 0;
+  let vac = 0, sick = 0, conf = 0, miss = 0, holCount = 0, lessonCount = 0;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dt = new Date(y, m-1, d);
+    const iso = isoDate(dt);
+    const dow = dt.getDay();
+    const isWeekend = dow === 0 || dow === 6;
+    const holKey = pad2(d) + '-' + pad2(m);
+    const holInfo = hols[holKey];
+
+    if (!isWeekend) wdTotal++;
+
+    const stored = monthData[iso];
+    if (stored) {
+      sum += stored.minutes || 0;
+      if (!isWeekend) {
+        const t = stored.type || 'work';
+        if (t === 'vacation' || t === 'sick' || t === 'conference' || t === 'holiday' || (stored.minutes > 0)) wdCovered++;
+        if (t === 'vacation') vac++;
+        if (t === 'sick') sick++;
+        if (t === 'conference') conf++;
+      }
+      if (stored.missIn) miss++;
+      if (stored.missOut) miss++;
+      if (Array.isArray(stored.lessons)) lessonCount += stored.lessons.length;
+      if (stored.type === 'holiday' || holInfo) holCount++;
+    } else {
+      if (holInfo && !isWeekend) { sum += FIXED_MIN; wdCovered++; holCount++; }
+      else if (holInfo) holCount++;
+    }
+  }
+
+  const rem = Math.max(GOAL_MIN - sum, 0);
+  const wdMissing = Math.max(wdTotal - wdCovered, 0);
+  const avg = wdMissing > 0 ? Math.ceil(rem / wdMissing) : 0;
+
+  document.getElementById('sTotal').textContent     = minToHM(sum);
+  document.getElementById('sRemaining').textContent = minToHM(rem);
+  document.getElementById('sWdTotal').textContent   = wdTotal;
+  document.getElementById('sWdCovered').textContent = wdCovered;
+  document.getElementById('sWdMissing').textContent = wdMissing;
+  document.getElementById('sDailyAvg').textContent  = wdMissing > 0 ? minToHM(avg) : (rem > 0 ? minToHM(rem) : '✅');
+  document.getElementById('mVac').textContent       = vac;
+  document.getElementById('mSick').textContent      = sick;
+  document.getElementById('mConf').textContent      = conf;
+  document.getElementById('mMiss').textContent      = miss;
+  document.getElementById('mHol').textContent       = holCount;
+  document.getElementById('mLesson').textContent    = lessonCount;
+}
+
+// ======================================================
+// ANNO DI CORSO
+// ======================================================
+function getCourseYear(y, m) {
+  const dt = new Date(y, m-1, 1);
+  for (let i = 0; i < COURSE_STARTS.length; i++) {
+    const s = COURSE_STARTS[i];
+    const e = COURSE_STARTS[i+1] || new Date(s.getFullYear()+1, s.getMonth(), s.getDate());
+    if (dt >= s && dt < e) return i + 1;
+  }
+  return null;
+}
+function updateCourseYear(y, m) {
+  const idx = getCourseYear(y, m);
+  const roman = ['I','II','III','IV'];
+  document.getElementById('courseYear').textContent = idx ? roman[idx-1] : '—';
+}
+
+// ======================================================
+// RIEPILOGO ANNUALE
+// ======================================================
+function buildYearPanels() {
+  const panels = document.getElementById('yearPanels');
+  panels.innerHTML = '';
+  for (let i = 1; i <= 4; i++) {
+    const div = document.createElement('div');
+    div.className = 'year-panel';
+    div.dataset.year = i;
+    div.innerHTML = `
+      <div class="year-body">
+        <div class="year-item ferie" onclick="showYearList(${i},'vacation')"><span>Ferie</span><strong id="yVac${i}">0/30</strong></div>
+        <div class="year-item malattia" onclick="showYearList(${i},'sick')"><span>Malattia</span><strong id="ySick${i}">0</strong></div>
+        <div class="year-item congresso" onclick="showYearList(${i},'conference')"><span>Congressi</span><strong id="yConf${i}">0</strong></div>
+        <div class="year-item timbrature" onclick="showYearList(${i},'misses')"><span>Mancate timbrature</span><strong id="yMiss${i}">0/6</strong></div>
+        <div class="year-item ore" onclick="showYearList(${i},'hours')"><span>Ore svolte</span><strong id="yHours${i}">0/1824</strong></div>
+        <div class="year-item lezioni" onclick="showYearList(${i},'lessons')"><span>Lezioni</span><strong id="yLessons${i}">0</strong></div>
+      </div>`;
+    panels.appendChild(div);
+  }
+}
+
+function setYearTab(n) {
+  activeYear = n;
+  document.querySelectorAll('.year-tab').forEach(t => t.classList.toggle('active', parseInt(t.dataset.year) === n));
+  document.querySelectorAll('.year-panel').forEach(p => p.classList.toggle('active', parseInt(p.dataset.year) === n));
+}
+
+function updateYearTab(y, m) {
+  const idx = getCourseYear(y, m) || 1;
+  setYearTab(idx);
+}
+
+function getPeriod(yearIndex) {
+  const s = COURSE_STARTS[yearIndex - 1];
+  const e = COURSE_STARTS[yearIndex] || new Date(s.getFullYear() + 1, s.getMonth(), s.getDate());
+  return { start: s, end: e };
+}
+
+async function updateYearBlocks() {
+  // Reset
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById(`yVac${i}`).textContent    = '0/30';
+    document.getElementById(`ySick${i}`).textContent   = '0';
+    document.getElementById(`yConf${i}`).textContent   = '0';
+    document.getElementById(`yMiss${i}`).textContent   = '0/6';
+    document.getElementById(`yHours${i}`).textContent  = '0/1824';
+    document.getElementById(`yLessons${i}`).textContent = '0';
+  }
+
+  const allKeys = await getAllOreKeys();
+  const counts = {};
+  for (let i = 1; i <= 4; i++) {
+    counts[i] = { vac:0, sick:0, conf:0, miss:0, min:0, lessons:0 };
+  }
+
+  for (const k of allKeys) {
+    const parts = k.split('_');
+    const yy = parseInt(parts[1], 10), mm = parseInt(parts[2], 10);
+    let obj = {};
+    // Prendi dalla cache o da localStorage/idb
+    const ck = monthKey(yy, mm);
+    if (cache[ck]) obj = cache[ck];
+    else {
+      try { const raw = localStorage.getItem(ck); if (raw) obj = JSON.parse(raw); } catch(_) {}
+      if (!Object.keys(obj).length) obj = (await dbGet(ck)) || {};
+    }
+
+    for (const iso in obj) {
+      const dt = new Date(iso);
+      for (let i = 1; i <= 4; i++) {
+        const { start, end } = getPeriod(i);
+        if (dt >= start && dt < end) {
+          const e = obj[iso];
+          const t = e.type || 'work';
+          if (t === 'vacation') counts[i].vac++;
+          if (t === 'sick')     counts[i].sick++;
+          if (t === 'conference') counts[i].conf++;
+          if (e.missIn)  counts[i].miss++;
+          if (e.missOut) counts[i].miss++;
+          counts[i].min += (e.minutes || 0);
+          if (Array.isArray(e.lessons)) counts[i].lessons += e.lessons.length;
+        }
+      }
+    }
+  }
+
+  for (let i = 1; i <= 4; i++) {
+    const c = counts[i];
+    document.getElementById(`yVac${i}`).textContent    = `${c.vac}/30`;
+    document.getElementById(`ySick${i}`).textContent   = `${c.sick}`;
+    document.getElementById(`yConf${i}`).textContent   = `${c.conf}`;
+    document.getElementById(`yMiss${i}`).textContent   = `${c.miss}/6`;
+    document.getElementById(`yHours${i}`).textContent  = `${Math.floor(c.min/60)}/1824`;
+    document.getElementById(`yLessons${i}`).textContent = `${c.lessons}`;
+  }
+}
+
+// ======================================================
+// MODAL
+// ======================================================
+async function openModal(iso) {
+  selISO = iso;
+  const [y, m, d] = iso.split('-').map(n => parseInt(n, 10));
+  const dt = new Date(y, m-1, d);
+  const dow = dt.getDay();
+  const isWeekend = dow === 0 || dow === 6;
+  const hols = getHolidays(y);
+  const holKey = pad2(d) + '-' + pad2(m);
+  const holInfo = hols[holKey];
+
+  document.getElementById('modalDateTitle').textContent = isoToDMY(iso);
+
+  // Dati salvati
+  const stored = monthData[iso];
+  let type = 'work', minutes = 0, note = '', missIn = false, missOut = false, lessons = [], slots = [];
+  if (stored) {
+    type    = stored.type    || 'work';
+    minutes = stored.minutes || 0;
+    note    = stored.note    || '';
+    missIn  = !!stored.missIn;
+    missOut = !!stored.missOut;
+    lessons = stored.lessons || [];
+    slots   = stored.slots   || [];
+  } else if (holInfo && !isWeekend) {
+    type = 'holiday'; minutes = FIXED_MIN;
+  }
+
+  document.getElementById('dayType').value  = type;
+  document.getElementById('confName').value = note;
+  document.getElementById('missIn').checked  = missIn;
+  document.getElementById('missOut').checked = missOut;
+
+  // Fasce
+  fasceTemp = slots.length ? [...slots] : [];
+  renderFasce();
+
+  // Ore totali
+  if (type === 'work') {
+    document.getElementById('timeInput').value    = minutes > 0 ? minToHM(minutes) : '';
+    document.getElementById('timeInput').disabled = fasceTemp.length > 0;
+  } else {
+    document.getElementById('timeInput').value    = minToHM(FIXED_MIN);
+    document.getElementById('timeInput').disabled = true;
+  }
+
+  // Lezioni
+  renderLessonList(lessons);
+
+  // Visibilità sezioni
+  onDayTypeChange();
+
+  document.getElementById('dayModal').hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('dayModal').hidden = true;
+  document.body.style.overflow = '';
+  selISO = null;
+  fasceTemp = [];
+  // Chiudi collapsibles
+  ['fasceSec','lessonSec','missSec'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('open'); updateToggleIcon(el, false); }
+  });
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('dayModal')) closeModal();
+}
+
+function onDayTypeChange() {
+  const type = document.getElementById('dayType').value;
+  const isWork = type === 'work';
+
+  document.getElementById('confNameGroup').hidden = (type !== 'conference');
+  document.getElementById('oreTotaliGroup').style.display = isWork ? '' : '';
+  document.getElementById('fasceSec').style.display = isWork ? '' : 'none';
+  document.getElementById('lessonSec').style.display = isWork ? '' : 'none';
+  document.getElementById('missSec').style.display = isWork ? '' : 'none';
+
+  if (!isWork) {
+    document.getElementById('timeInput').value    = minToHM(FIXED_MIN);
+    document.getElementById('timeInput').disabled = true;
+  } else {
+    document.getElementById('timeInput').disabled = fasceTemp.length > 0;
+  }
+}
+
+// ======================================================
+// FASCE ORARIE
+// ======================================================
+function renderFasce() {
+  const list = document.getElementById('fasceList');
+  list.innerHTML = '';
+  fasceTemp.forEach((f, idx) => {
+    const row = document.createElement('div');
+    row.className = 'fascia-row';
+    row.innerHTML = `
+      <input type="time" value="${f.in || ''}" oninput="fasceTemp[${idx}].in=this.value;calcFasce()"/>
+      <span style="color:var(--muted)">→</span>
+      <input type="time" value="${f.out || ''}" oninput="fasceTemp[${idx}].out=this.value;calcFasce()"/>
+      <button class="btn-del" onclick="removeFascia(${idx})">✕</button>`;
+    list.appendChild(row);
+  });
+  updateTimeFromFasce();
+}
+
+function addFascia() {
+  fasceTemp.push({ in: '', out: '' });
+  renderFasce();
+}
+
+function removeFascia(idx) {
+  fasceTemp.splice(idx, 1);
+  renderFasce();
+}
+
+function calcFasce() {
+  updateTimeFromFasce();
+}
+
+function updateTimeFromFasce() {
+  let sum = 0;
+  let hasValid = false;
+  fasceTemp.forEach(f => {
+    const a = hmToMin(f.in), b = hmToMin(f.out);
+    if (f.in && f.out && b >= a) { sum += b - a; hasValid = true; }
+  });
+  const ti = document.getElementById('timeInput');
+  if (hasValid) {
+    ti.value    = minToHM(sum);
+    ti.disabled = true;
+  } else {
+    ti.disabled = false;
+  }
+}
+
+// ======================================================
+// LEZIONI
+// ======================================================
+function renderLessonList(lessons) {
+  const list = document.getElementById('lessonListModal');
+  list.innerHTML = '';
+  if (!lessons || lessons.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;padding:6px 0">Nessuna lezione registrata</div>';
+    return;
+  }
+  lessons.forEach((l, idx) => {
+    const row = document.createElement('div');
+    row.className = 'lesson-row';
+    row.innerHTML = `<div><strong>${l.title || '—'}</strong> <span style="color:var(--muted);font-size:12px">${l.start||''}–${l.end||''}</span>${l.doc ? `<br><span style="font-size:11px;color:var(--muted)">${l.doc}</span>` : ''}</div>`;
+    const del = document.createElement('button');
+    del.className = 'l-del';
+    del.textContent = '🗑️';
+    del.onclick = async () => {
+      const [y,m] = selISO.split('-').map(n=>parseInt(n,10));
+      const mo = await loadMonth(y, m);
+      if (mo[selISO] && Array.isArray(mo[selISO].lessons)) {
+        mo[selISO].lessons.splice(idx, 1);
+        await saveMonth(y, m, mo);
+        monthData = mo;
+        renderLessonList(mo[selISO].lessons);
+        renderCalendar(y, m);
+        updateStats(y, m);
+      }
+    };
+    row.appendChild(del);
+    list.appendChild(row);
+  });
+}
+
+async function addLesson() {
+  if (!selISO) return;
+  const title = document.getElementById('lessonTitle').value.trim();
+  const doc   = document.getElementById('lessonDoc').value.trim();
+  const start = document.getElementById('lessonStart').value;
+  const end   = document.getElementById('lessonEnd').value;
+  if (!title && !start) return;
+
+  const [y, m] = selISO.split('-').map(n => parseInt(n, 10));
+  if (!monthData[selISO]) monthData[selISO] = { type:'work', minutes:0, note:'', missIn:false, missOut:false, lessons:[], slots:[] };
+  if (!Array.isArray(monthData[selISO].lessons)) monthData[selISO].lessons = [];
+  monthData[selISO].lessons.push({ title, doc, start, end });
+  await saveMonth(y, m, monthData);
+  renderLessonList(monthData[selISO].lessons);
+  renderCalendar(y, m);
+  updateStats(y, m);
+
+  // Clear form
+  document.getElementById('lessonTitle').value = '';
+  document.getElementById('lessonDoc').value   = '';
+  document.getElementById('lessonStart').value = '';
+  document.getElementById('lessonEnd').value   = '';
+}
+
+// ======================================================
+// SALVA / CANCELLA GIORNO
+// ======================================================
+async function saveDay() {
+  if (!selISO) return;
+  const [y, m] = selISO.split('-').map(n => parseInt(n, 10));
+
+  const type   = document.getElementById('dayType').value;
+  const missIn  = document.getElementById('missIn').checked;
+  const missOut = document.getElementById('missOut').checked;
+  let note = '';
+  let minutes = 0;
+
+  if (type === 'work') {
+    const txt = document.getElementById('timeInput').value.trim();
+    minutes = hmToMin(txt);
+    if (txt && isNaN(minutes)) { alert('Formato orario non valido. Usa HH:MM'); return; }
+  } else {
+    minutes = FIXED_MIN;
+    if (type === 'conference') note = document.getElementById('confName').value.trim();
+  }
+
+  const prev    = monthData[selISO] || {};
+  const lessons = prev.lessons || [];
+
+  monthData[selISO] = {
+    type, minutes, note, missIn, missOut, lessons,
+    slots: type === 'work' ? [...fasceTemp] : []
+  };
+
+  await saveMonth(y, m, monthData);
+  renderCalendar(y, m);
+  updateStats(y, m);
+  await updateYearBlocks();
+  closeModal();
+}
+
+async function clearDay() {
+  if (!selISO) return;
+  const [y, m] = selISO.split('-').map(n => parseInt(n, 10));
+  delete monthData[selISO];
+  await saveMonth(y, m, monthData);
+  renderCalendar(y, m);
+  updateStats(y, m);
+  await updateYearBlocks();
+  closeModal();
+}
+
+// ======================================================
+// COLLAPSIBLE
+// ======================================================
+function toggleCollapsible(id) {
+  const el = document.getElementById(id);
+  const wasOpen = el.classList.contains('open');
+  el.classList.toggle('open', !wasOpen);
+  updateToggleIcon(el, !wasOpen);
+}
+function updateToggleIcon(el, open) {
+  const icon = el.querySelector('.toggle-icon');
+  if (icon) icon.textContent = open ? '－' : '＋';
+}
+
+// ======================================================
+// POPUP LISTA
+// ======================================================
+function showMonthList(kind) {
+  const y = getY(), m = getM();
+  const hols = getHolidays(y);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const titleMap = { vacation:'Ferie', sick:'Malattia', conference:'Congressi', misses:'Mancate timbrature', holidays:'Festivi', lessons:'Lezioni' };
+  let items = [];
+
+  if (kind === 'vacation' || kind === 'sick' || kind === 'conference') {
+    for (const iso in monthData) {
+      const e = monthData[iso];
+      if (e && e.type === kind) {
+        const entry = kind === 'conference' ? `${isoToDMY(iso)} — ${e.note || ''}` : isoToDMY(iso);
+        items.push(entry);
+      }
+    }
+    items.sort();
+  } else if (kind === 'misses') {
+    for (const iso in monthData) {
+      const e = monthData[iso];
+      if (e && (e.missIn || e.missOut)) {
+        const txt = [e.missIn ? 'entrata' : '', e.missOut ? 'uscita' : ''].filter(Boolean).join(' + ');
+        items.push(`${isoToDMY(iso)} — ${txt}`);
+      }
+    }
+    items.sort();
+  } else if (kind === 'holidays') {
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = pad2(d) + '-' + pad2(m);
+      const holInfo = hols[key];
+      if (holInfo) items.push(`${isoToDMY(`${y}-${pad2(m)}-${pad2(d)}`)} — ${holInfo[0]}`);
+    }
+  } else if (kind === 'lessons') {
+    for (const iso in monthData) {
+      const e = monthData[iso];
+      if (e && Array.isArray(e.lessons)) {
+        e.lessons.forEach(l => items.push(`${isoToDMY(iso)} — ${l.title || '—'} (${l.start||''}–${l.end||''})`));
+      }
+    }
+    items.sort();
+  }
+
+  showPopup(titleMap[kind] || kind, items, 'center');
+}
+
+async function showYearList(yearIndex, kind) {
+  const { start, end } = getPeriod(yearIndex);
+  const roman = ['I','II','III','IV'][yearIndex-1];
+  const titleMap = { vacation:'Ferie', sick:'Malattia', conference:'Congressi', misses:'Mancate timbrature', hours:'Ore mensili', lessons:'Lezioni' };
+  let items = [];
+
+  const allKeys = await getAllOreKeys();
+  for (const k of allKeys) {
+    const parts = k.split('_');
+    const yy = parseInt(parts[1],10), mm = parseInt(parts[2],10);
+    let obj = {};
+    const ck = monthKey(yy,mm);
+    if (cache[ck]) obj = cache[ck];
+    else { try { const raw = localStorage.getItem(ck); if(raw) obj=JSON.parse(raw); } catch(_) {} }
+
+    for (const iso in obj) {
+      const dt = new Date(iso);
+      if (dt >= start && dt < end) {
+        const e = obj[iso];
+        if (kind === 'vacation' && e.type === 'vacation') items.push(isoToDMY(iso));
+        if (kind === 'sick' && e.type === 'sick') items.push(isoToDMY(iso));
+        if (kind === 'conference' && e.type === 'conference') items.push(`${isoToDMY(iso)} — ${e.note||''}`);
+        if (kind === 'misses' && (e.missIn || e.missOut)) {
+          const txt = [e.missIn?'entrata':'',e.missOut?'uscita':''].filter(Boolean).join(' + ');
+          items.push(`${isoToDMY(iso)} — ${txt}`);
+        }
+        if (kind === 'lessons' && Array.isArray(e.lessons)) {
+          e.lessons.forEach(l => items.push(`${isoToDMY(iso)} — ${l.title||'—'}`));
+        }
+        if (kind === 'hours') {
+          // Raggruppa per mese
+        }
+      }
+    }
+  }
+
+  if (kind === 'hours') {
+    // Ore per mese
+    const byMonth = {};
+    for (const k of allKeys) {
+      const parts = k.split('_');
+      const yy = parseInt(parts[1],10), mm = parseInt(parts[2],10);
+      const ck = monthKey(yy,mm);
+      let obj = cache[ck] || {};
+      if (!Object.keys(obj).length) { try { const raw=localStorage.getItem(ck); if(raw) obj=JSON.parse(raw); }catch(_){} }
+      for (const iso in obj) {
+        const dt = new Date(iso);
+        if (dt >= start && dt < end) {
+          const mLabel = new Date(yy, mm-1, 1).toLocaleString('it-IT',{month:'long',year:'numeric'});
+          byMonth[mLabel] = (byMonth[mLabel] || 0) + ((obj[iso].minutes) || 0);
+        }
+      }
+    }
+    items = Object.entries(byMonth).sort().map(([label, min]) => `${label}: ${minToHM(min)}`);
+  }
+
+  items.sort();
+  showPopup(`${titleMap[kind]||kind} — Anno ${roman}`, items, 'center');
+}
+
+function showPopup(title, items, pos) {
+  const popup = document.getElementById('listPopup');
+  document.getElementById('popupTitle').textContent = title;
+  const body = document.getElementById('popupBody');
+  body.innerHTML = '';
+  if (!items || items.length === 0) {
+    body.innerHTML = '<li style="color:var(--muted)">Nessun dato</li>';
+  } else {
+    items.forEach(it => {
+      const li = document.createElement('li'); li.textContent = it; body.appendChild(li);
+    });
+  }
+  popup.hidden = false;
+  // Posizionamento
+  popup.style.position = 'fixed';
+  popup.style.left = '50%';
+  popup.style.top  = '50%';
+  popup.style.transform = 'translate(-50%, -50%)';
+  // Chiudi con click fuori
+  setTimeout(() => {
+    document.addEventListener('click', closePopupOutside, { once: true, capture: true });
+  }, 0);
+}
+
+function closePopupOutside(e) {
+  const popup = document.getElementById('listPopup');
+  if (!popup.contains(e.target)) popup.hidden = true;
+}
+function closePopup() {
+  document.getElementById('listPopup').hidden = true;
+}
+
+// ======================================================
+// NAVIGAZIONE
+// ======================================================
+function changeMonth(delta) {
+  let m = getM() + delta, y = getY();
+  if (m < 1)  { m = 12; y--; }
+  if (m > 12) { m = 1;  y++; }
+  document.getElementById('monthSelect').value = m;
+  document.getElementById('yearSelect').value  = y;
+  renderAll();
+}
+
+function goToday() {
+  const now = new Date();
+  document.getElementById('monthSelect').value = now.getMonth() + 1;
+  document.getElementById('yearSelect').value  = now.getFullYear();
+  renderAll();
+}
+
+// ======================================================
+// TEMA
+// ======================================================
+function toggleTheme() {
+  const cur  = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  safeSet('theme', next);
+}
+
+// ======================================================
+// RESET
+// ======================================================
+function confirmResetMonth(evt) {
+  showConfirm('Reset mese', 'Cancellare tutti i dati del mese corrente?', async () => {
+    const y = getY(), m = getM();
+    monthData = {};
+    await saveMonth(y, m, {});
+    renderAll();
+  }, evt);
+}
+
+function confirmResetAll(evt) {
+  showConfirm('Reset completo', '⚠️ Cancellare TUTTI i dati salvati? Questa operazione è irreversibile.', async () => {
+    // Clear localStorage
+    try {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k && (k.startsWith('ore_') || k.startsWith('meta_'))) localStorage.removeItem(k);
+      }
+    } catch(_) {}
+    // Clear IndexedDB
+    const keys = await dbKeys();
+    for (const k of keys) await dbDel(k);
+    // Clear cache
+    Object.keys(cache).forEach(k => delete cache[k]);
+    renderAll();
+  }, evt);
+}
+
+// ======================================================
+// CONFIRM POPUP
+// ======================================================
+let confirmCallback = null;
+function showConfirm(title, msg, cb, evt) {
+  confirmCallback = cb;
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent   = msg;
+  const popup = document.getElementById('confirmPopup');
+  popup.hidden = false;
+  // Posizionamento accanto al click
+  if (evt) {
+    const x = evt.clientX + 10;
+    const y = evt.clientY - 70;
+    popup.style.position = 'fixed';
+    popup.style.left = Math.min(x, window.innerWidth - 300) + 'px';
+    popup.style.top  = Math.max(10, y) + 'px';
+    popup.style.transform = 'none';
+  } else {
+    popup.style.position = 'fixed';
+    popup.style.left = '50%';
+    popup.style.top  = '50%';
+    popup.style.transform = 'translate(-50%,-50%)';
+  }
+}
+function closeConfirm() {
+  document.getElementById('confirmPopup').hidden = true;
+  confirmCallback = null;
+}
+document.getElementById('confirmOk').addEventListener('click', () => {
+  closeConfirm();
+  if (confirmCallback) confirmCallback();
+});
+
+// ======================================================
+// EXPORT CSV
+// ======================================================
+async function exportAllCSV() {
+  const rows = [['Data','Tipo','Ore','Note','MissIn','MissOut','Mese','Anno']];
+  const allKeys = await getAllOreKeys();
+  for (const k of allKeys) {
+    const parts = k.split('_');
+    const yy = parseInt(parts[1],10), mm = parseInt(parts[2],10);
+    const ck = monthKey(yy,mm);
+    let obj = cache[ck] || {};
+    if (!Object.keys(obj).length) { try { const raw=localStorage.getItem(ck); if(raw) obj=JSON.parse(raw); }catch(_){} }
+    if (!Object.keys(obj).length) obj = (await dbGet(ck)) || {};
+    for (const iso in obj) {
+      const e = obj[iso];
+      rows.push([iso, e.type||'', e.minutes ? minToHM(e.minutes) : '', (e.note||'').replace(/,/g,';'), e.missIn?'1':'', e.missOut?'1':'', pad2(mm), yy]);
+    }
+  }
+  const csv  = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'medicina_ore.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ======================================================
+// IMPORT CSV
+// ======================================================
+function importCSV() {
+  document.getElementById('fileInput').click();
+}
+
+async function handleImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const text = await file.text();
+  const lines = text.split('\n').filter(l => l.trim());
+  if (lines.length < 2) return;
+
+  const byMonth = {};
+  for (let i = 1; i < lines.length; i++) {
+    const cols = lines[i].split(',');
+    const iso  = cols[0]; if (!iso || iso.length !== 10) continue;
+    const [y, m] = iso.split('-').map(n => parseInt(n, 10));
+    const k = monthKey(y, m);
+    if (!byMonth[k]) { byMonth[k] = { y, m, obj: await loadMonth(y, m) }; }
+    const entry = byMonth[k].obj;
+    entry[iso] = {
+      type:    cols[1] || 'work',
+      minutes: hmToMin(cols[2]),
+      note:    cols[3] || '',
+      missIn:  cols[4] === '1',
+      missOut: cols[5] === '1',
+      lessons: [],
+      slots:   []
+    };
+  }
+
+  for (const k of Object.values(byMonth)) {
+    cache[monthKey(k.y, k.m)] = k.obj;
+    await saveMonth(k.y, k.m, k.obj);
+  }
+  e.target.value = '';
+  alert('Importazione completata!');
+  renderAll();
+}
+
+// ======================================================
+// AVVIO
+// ======================================================
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<script>
+// Service Worker registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      console.log('SW registered:', reg.scope);
+    }).catch(err => {
+      // SW non disponibile (file:// locale) — normale, i dati sono comunque in IndexedDB
+      console.log('SW non disponibile (normale su file://):', err.message);
+    });
+  });
+}
+
+// iOS "Aggiungi a schermata Home" banner
+(function(){
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = ('standalone' in navigator) && navigator.standalone;
+  const dismissed = localStorage.getItem('pwa_banner_dismissed');
+  if (isIOS && !isStandalone && !dismissed) {
+    const banner = document.createElement('div');
+    banner.id = 'pwaBanner';
+    banner.style.cssText = `
+      position:fixed;bottom:0;left:0;right:0;z-index:9999;
+      background:#1e293b;color:#f1f5f9;
+      padding:14px 16px 20px;
+      border-top:1px solid #334155;
+      font-family:-apple-system,sans-serif;font-size:14px;
+      display:flex;align-items:center;gap:12px;
+      box-shadow:0 -4px 20px rgba(0,0,0,.4);
+    `;
+    banner.innerHTML = `
+      <span style="font-size:28px">🩺</span>
+      <div style="flex:1">
+        <strong>Installa MedLav Ore</strong><br>
+        <span style="font-size:12px;opacity:.8">Tocca <strong>⎙ Condividi</strong> poi <strong>"Aggiungi a schermata Home"</strong></span>
+      </div>
+      <button onclick="document.getElementById('pwaBanner').remove();localStorage.setItem('pwa_banner_dismissed','1')"
+        style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;padding:4px">✕</button>
+    `;
+    document.body.appendChild(banner);
+  }
+})();
+</script>
+</body>
+</html>
