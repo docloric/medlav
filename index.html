@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <link rel="manifest" href="manifest.json"/>
+  <link rel="manifest" href="/medlav/manifest.json"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="MedLav Ore"/>
@@ -1905,7 +1905,9 @@ document.addEventListener('DOMContentLoaded', init);
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.register('/medlav/sw.js', {scope: '/medlav/'})
+      .then(r => console.log('SW ok', r.scope))
+      .catch(e => console.log('SW skip (file://):', e.message));
   });
 }
 (function(){
@@ -1915,7 +1917,7 @@ if ('serviceWorker' in navigator) {
   if (isIOS && !isStandalone && !dismissed) {
     const banner = document.createElement('div');
     banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1e293b;color:#f1f5f9;padding:14px 16px 28px;border-top:1px solid #334155;font-family:-apple-system,sans-serif;font-size:14px;display:flex;align-items:center;gap:12px;';
-    banner.innerHTML = '<span style="font-size:28px">🩺</span><div style="flex:1"><strong>Installa MedLav Ore</strong><br><span style="font-size:12px;opacity:.8">Tocca <strong>&#9141; Condividi</strong> poi <strong>"Aggiungi a schermata Home"</strong></span></div><button onclick="this.parentElement.remove();localStorage.setItem('pwa_banner_dismissed','1')" style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;padding:4px">&#x2715;</button>';
+    banner.innerHTML = '<span style="font-size:28px">🩺</span><div style="flex:1"><strong>Installa MedLav Ore</strong><br><span style="font-size:12px;opacity:.8">Tocca &#9141; <strong>Condividi</strong> poi <strong>"Aggiungi a schermata Home"</strong></span></div><button onclick="this.parentElement.remove();localStorage.setItem('pwa_banner_dismissed','1')" style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;padding:4px">&#x2715;</button>';
     document.body.appendChild(banner);
   }
 })();
