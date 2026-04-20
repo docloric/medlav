@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <link rel="manifest" href="/medlav/manifest.json"/>
+  <link rel="manifest" href="manifest.json"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="MedLav Ore"/>
@@ -620,6 +620,7 @@ button.btn-warn { background: #f59e0b; color: #000; }
     <div class="stat-card"><div>Gg mancanti</div><strong id="sWdMissing">0</strong></div>
     <div class="stat-card"><div>Media/giorno</div><strong id="sDailyAvg">--:--</strong></div>
   </div>
+  <div class="stats-grid" id="statsRowWeeks" style="margin-top:6px"></div>
   <div class="stats-grid" id="statsRow2">
     <div class="stat-card clickable c-vac" id="cardVac" onclick="showMonthList('vacation')">Ferie<br><strong id="mVac">0</strong></div>
     <div class="stat-card clickable c-sick" id="cardSick" onclick="showMonthList('sick')">Malattia<br><strong id="mSick">0</strong></div>
@@ -681,10 +682,10 @@ button.btn-warn { background: #f59e0b; color: #000; }
       <label>Tipo giornata</label>
       <select id="dayType" onchange="onDayTypeChange()">
         <option value="work">Attività di servizio</option>
-        <option value="holiday">Festivo (07:35)</option>
-        <option value="vacation">Ferie (07:35)</option>
-        <option value="sick">Malattia (07:35)</option>
-        <option value="conference">Congresso (07:35)</option>
+        <option value="holiday">Festivo (07:06)</option>
+        <option value="vacation">Ferie (07:06)</option>
+        <option value="sick">Malattia (07:06)</option>
+        <option value="conference">Congresso (07:06)</option>
       </select>
     </div>
 
@@ -774,7 +775,7 @@ button.btn-warn { background: #f59e0b; color: #000; }
 // ======================================================
 // COSTANTI
 // ======================================================
-const FIXED_MIN = 7 * 60 + 35; // 07:35
+const FIXED_MIN = 7 * 60 + 6; // 07:06
 const GOAL_MIN  = 152 * 60;    // 152 ore
 
 // Anno di inizio corso (Novembre)
@@ -1197,6 +1198,83 @@ function updateStats(y, m) {
   const rem = Math.max(GOAL_MIN - sum, 0);
   const wdMissing = Math.max(wdTotal - wdCovered, 0);
   const avg = wdMissing > 0 ? Math.ceil(rem / wdMissing) : 0;
+
+  // Calcolo ore per settimana del mese (ogni settimana = lun-dom)
+  const today = new Date();
+  const todayISO = isoDate(today);
+  const WEEK_GOAL_MIN = 38 * 60;
+  const WEEK_WARN_MIN = 34 * 60;
+
+  // Costruisci lista settimane che si sovrappongono al mese
+  const weeks = [];
+  // Prima data del mese
+  const firstDay = new Date(y, m-1, 1);
+  // Lunedì della settimana che contiene il primo giorno del mese
+  const firstDow = (firstDay.getDay() + 6) % 7;
+  let cursor = new Date(firstDay);
+  cursor.setDate(firstDay.getDate() - firstDow);
+  while (cursor <= new Date(y, m, 0)) {
+    const mon = new Date(cursor);
+    const sun = new Date(cursor); sun.setDate(cursor.getDate() + 6);
+    weeks.push({ mon, sun });
+    cursor.setDate(cursor.getDate() + 7);
+  }
+
+  // Calcola ore e giorni lavorativi per ogni settimana (solo giorni del mese corrente)
+  const weekData = weeks.map(({ mon, sun }) => {
+    let wMin = 0;
+    let wdCount = 0; // giorni lavorativi (lun-ven non festivi) che cadono in questo mese
+    const d = new Date(mon);
+    while (d <= sun) {
+      if (d.getMonth() === m-1) {
+        const iso2 = isoDate(d);
+        const dow2 = d.getDay();
+        const isWe = dow2 === 0 || dow2 === 6;
+        if (!isWe) wdCount++; // conta solo feriali del mese
+        const s2 = monthData[iso2];
+        if (s2) {
+          wMin += s2.minutes || 0;
+        } else if (!isWe) {
+          const holKey2 = pad2(d.getDate()) + '-' + pad2(m);
+          if (hols[holKey2]) wMin += FIXED_MIN;
+        }
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    // Target proporzionale: (giorni lavorativi nel mese / 5) × 38h
+    const targetMin = Math.round((wdCount / 5) * WEEK_GOAL_MIN);
+    const warnMin   = Math.round((wdCount / 5) * WEEK_WARN_MIN);
+    return { wMin, wdCount, targetMin, warnMin };
+  });
+
+  // Costruisci le card settimana
+  const weeksRow = document.getElementById('statsRowWeeks');
+  weeksRow.innerHTML = '';
+  const todayTime = today.getTime();
+  weeks.forEach(({ mon, sun }, i) => {
+    const { wMin, wdCount, targetMin, warnMin } = weekData[i];
+    const isCurrent = todayTime >= mon.getTime() && todayTime <= sun.getTime();
+
+    // Etichetta date (solo giorni del mese)
+    const dStart = mon.getMonth() === m-1 ? mon.getDate() : 1;
+    const dEnd   = sun.getMonth() === m-1 ? sun.getDate() : new Date(y, m, 0).getDate();
+    const label  = `${pad2(dStart)}/${pad2(m)}–${pad2(dEnd)}/${pad2(m)}`;
+
+    // Colore basato sul target proporzionale
+    let valColor = 'var(--text)';
+    if (wMin >= targetMin) valColor = 'var(--ok)';
+    else if (wMin >= warnMin) valColor = 'var(--warn)';
+
+    const card = document.createElement('div');
+    card.className = 'stat-card';
+    card.style.cssText = `min-width:90px;flex:1 1 90px;${isCurrent ? 'box-shadow:0 0 0 2px var(--primary) inset;' : ''}`;
+    card.innerHTML = `
+      <div style="font-size:10px;font-weight:700;margin-bottom:1px">S${i+1}${isCurrent ? ' 📍' : ''}</div>
+      <div style="font-size:9px;color:var(--muted);margin-bottom:3px">${label}</div>
+      <strong style="color:${valColor};font-size:13px">${minToHM(wMin)}</strong>
+      <div style="font-size:9px;color:var(--muted);margin-top:1px">/ ${minToHM(targetMin)}</div>`;
+    weeksRow.appendChild(card);
+  });
 
   document.getElementById('sTotal').textContent     = minToHM(sum);
   document.getElementById('sRemaining').textContent = minToHM(rem);
@@ -1905,9 +1983,7 @@ document.addEventListener('DOMContentLoaded', init);
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/medlav/sw.js', {scope: '/medlav/'})
-      .then(r => console.log('SW ok', r.scope))
-      .catch(e => console.log('SW skip (file://):', e.message));
+    navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
 (function(){
@@ -1917,7 +1993,7 @@ if ('serviceWorker' in navigator) {
   if (isIOS && !isStandalone && !dismissed) {
     const banner = document.createElement('div');
     banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1e293b;color:#f1f5f9;padding:14px 16px 28px;border-top:1px solid #334155;font-family:-apple-system,sans-serif;font-size:14px;display:flex;align-items:center;gap:12px;';
-    banner.innerHTML = '<span style="font-size:28px">🩺</span><div style="flex:1"><strong>Installa MedLav Ore</strong><br><span style="font-size:12px;opacity:.8">Tocca &#9141; <strong>Condividi</strong> poi <strong>"Aggiungi a schermata Home"</strong></span></div><button onclick="this.parentElement.remove();localStorage.setItem('pwa_banner_dismissed','1')" style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;padding:4px">&#x2715;</button>';
+    banner.innerHTML = '<span style="font-size:28px">🩺</span><div style="flex:1"><strong>Installa MedLav Ore</strong><br><span style="font-size:12px;opacity:.8">Tocca <strong>&#9141; Condividi</strong> poi <strong>"Aggiungi a schermata Home"</strong></span></div><button onclick="this.parentElement.remove();localStorage.setItem('pwa_banner_dismissed','1')" style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;padding:4px">&#x2715;</button>';
     document.body.appendChild(banner);
   }
 })();
